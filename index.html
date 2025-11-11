@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="controlDOM.css">
+    <title>EditarJS</title>
+</head>
+<body>
+    <div class="container-title">
+        <h1>Editando con JS</h1>
+    </div>
+    <div class="container-data">
+        <div class="container-form">
+            <h3>Formulario</h3>
+            <div class="input-nombre">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="input-nombre" onkeydown="restringirSoloLetras(event)" tabindex="1" autofocus>
+            </div>
+            <div class="input-apellido">
+                <label for="apellido">Apellido:</label>
+                <input type="apellido" id="input-apellido" onkeydown="restringirSoloLetras(event)" tabindex="2">
+            </div>
+            <div class="input-documento">
+                <label for="documento">Documento:</label>
+                <input type="documento" id="input-documento" onkeydown="restringirSoloNumeros(event)" maxlength="8" tabindex="3">
+            </div>
+            <input 
+                class="btn-agregar" 
+                id="btn-agregar-actualizar"
+                type="submit"
+                value="Guardar usuario"
+                onclick="accionUsuario(event)"
+            >
+        </div>
+        <div class="container-data-list">
+            <h1>Lista usuarios</h1>
+            <table class="table-usuarios" id="table-usuarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>apellido</th>
+                        <th>Documento</th>
+                        <th style="column-span:2;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <input
+            class="btn btn-generar-pdf"
+            type="submit"
+            id="btn-generar"
+            value="Generar PDF"
+            onclick="generarPDF(event)"
+            >
+        </div>
+    </div>
+    <div class="video">
+        <video src="Logo3DAnimado.mp4" autoplay loop></video>
+    </div>
+
+    <script>
+        function restringirSoloNumeros(event)
+        {
+            if (event.key === "Enter")
+                proximoCampo()
+            const esNumero = /^[0-9]$/.test(event.key);
+            const esTeclaControl = ['Backspace', 'Tab', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.key);
+            
+            if (!esNumero && !esTeclaControl)
+            {
+                event.preventDefault();
+            }
+        }
+
+        function restringirSoloLetras(event)
+        {
+            if (event.key === "Enter")
+                proximoCampo()
+            const esLetra = /^[a-zA-Zñáéíóú\s]$/.test(event.key);
+            const esTeclaControl = ['Backspace', 'Tab', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.key);
+            
+            if (!esLetra && !esTeclaControl)
+            {
+                event.preventDefault();
+            }
+        }
+
+        function proximoCampo()
+        {
+            const currentInput = document.activeElement;
+            const tabIndexActual=parseInt(currentInput.getAttribute('tabindex'))
+            if (tabIndexActual==3)
+                tabIndexProximo=1
+            else
+                tabIndexProximo=tabIndexActual+1
+            const nextInput = document.querySelector(`input[tabindex="${tabIndexProximo}"]`)
+            if (nextInput)
+            {
+                nextInput.focus()
+            }
+        }
+    </script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.3/jspdf.umd.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="controlDOM.js"></script>
+</body>
+</html>
